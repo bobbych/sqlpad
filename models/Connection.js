@@ -9,6 +9,7 @@ var schema = {
   host: Joi.string().optional(),
   port: Joi.any().optional(),
   database: Joi.string().optional(),
+  account: Joi.string().optional(), //snowflakedb required connection option
   username: Joi.string().default('', 'Database Username'), // decrypt for presentation, encrypted for storage
   password: Joi.string().default('', 'Database Password'), // decrypt for presentation, encrypted for storage
   domain: Joi.string().optional().allow(''),
@@ -17,6 +18,8 @@ var schema = {
   mysqlInsecureAuth: Joi.boolean().default(false, 'Mysql Insecure Auth'),
   prestoCatalog: Joi.string().optional().allow(''),
   prestoSchema: Joi.string().optional().allow(''),
+  snowflakeSchema: Joi.string().optional().allow(''),
+  snowflakeWarehouse: Joi.string().optional().allow(''),
   createdDate: Joi.date().default(new Date(), 'time of creation'),
   modifiedDate: Joi.date().default(new Date(), 'time of modifcation')
 }
@@ -28,6 +31,7 @@ var Connection = function Connection (data) {
   this.host = data.host
   this.port = data.port
   this.database = data.database
+  this.account = data.account
   this.username = data.username
   this.password = data.password
   this.domain = data.domain // this is sql server only for now, but could apply to other dbs in future?
@@ -36,6 +40,8 @@ var Connection = function Connection (data) {
   this.mysqlInsecureAuth = data.mysqlInsecureAuth
   this.prestoCatalog = data.prestoCatalog
   this.prestoSchema = data.prestoSchema
+  this.snowflakeSchema = data.snowflakeSchema
+  this.snowflakeWarehouse = data.snowflakeWarehouse
   this.createdDate = data.createdDate
   this.modifiedDate = data.modifiedDate
 }

@@ -13,6 +13,7 @@ function connectionFromBody (body) {
     host: body.host,
     port: body.port,
     database: body.database,
+    account: body.account,
     username: body.username,
     password: body.password,
     domain: body.domain,
@@ -20,7 +21,9 @@ function connectionFromBody (body) {
     postgresSsl: (body.postgresSsl === true),
     mysqlInsecureAuth: (body.mysqlInsecureAuth === true),
     prestoCatalog: body.prestoCatalog,
-    prestoSchema: body.prestoSchema
+    prestoSchema: body.prestoSchema,
+    snowflakeSchema: body.snowflakeSchema,
+    snowflakeWarehouse: body.snowflakeWarehouse
   }
 }
 
@@ -107,12 +110,15 @@ router.put('/api/connections/:_id', mustBeAdmin, function (req, res) {
     connection.host = req.body.host
     connection.port = req.body.port
     connection.database = req.body.database
+    connection.account = req.body.account
     connection.domain = req.body.domain
     connection.sqlserverEncrypt = (req.body.sqlserverEncrypt === true)
     connection.postgresSsl = (req.body.postgresSsl === true)
     connection.mysqlInsecureAuth = (req.body.mysqlInsecureAuth === true)
     connection.prestoCatalog = req.body.prestoCatalog
     connection.prestoSchema = req.body.prestoSchema
+    connection.snowflakeSchema = req.body.snowflakeSchema
+    connection.snowflakeWarehouse = req.body.snowflakeWarehouse
     connection.save(function (err, connection) {
       if (err) {
         console.error(err)

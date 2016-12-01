@@ -255,6 +255,15 @@ var ConnectionForm = React.createClass({
   onPrestoSchemaChange: function (e) {
     this.props.setConnectionValue('prestoSchema', e.target.value)
   },
+  onAccountChange: function (e) {
+    this.props.setConnectionValue('account', e.target.value)
+  },
+  onSnowflakeSchemaChange: function (e) {
+    this.props.setConnectionValue('snowflakeSchema', e.target.value)
+  },
+  onSnowflakeWarehouseChange: function (e) {
+    this.props.setConnectionValue('snowflakeWarehouse', e.target.value)
+  },
   render: function () {
     if (!this.props.selectedConnection) {
       return (
@@ -335,6 +344,36 @@ var ConnectionForm = React.createClass({
         )
       }
     }
+    var hostInput = () => {
+      if(connection.driver !== 'snowflake') {
+        return (
+          <FormGroup controlId='host'>
+            <ControlLabel>Host/Server/IP Address</ControlLabel>
+            <FormControl type='text' value={connection.host || ''} onChange={this.onHostChange} />
+          </FormGroup>
+        )
+      }
+    }
+    var portInput = () => {
+      if (connection.driver !== 'snowflake') {
+        return (
+          <FormGroup controlId='port'>
+            <ControlLabel>Port (optional)</ControlLabel>
+            <FormControl type='text' value={connection.port || ''} onChange={this.onPortChange} />
+          </FormGroup>
+        )
+      }
+    }
+    var accountInput = () => {
+      if (connection.driver === 'snowflake') {
+        return (
+          <FormGroup controlId='account'>
+            <ControlLabel>Account</ControlLabel>
+            <FormControl type='text' value={connection.account || ''} onChange={this.onHostChange} />
+          </FormGroup>
+        )
+      }
+    }
     return (
       <div className='ConnectionForm' style={this.style}>
         <Panel>
@@ -353,16 +392,12 @@ var ConnectionForm = React.createClass({
                 <option value='presto'>Presto</option>
                 <option value='sqlserver'>SQL Server</option>
                 <option value='vertica'>Vertica</option>
+                <option value='snowflake'>Snowflake DB</option>
               </FormControl>
             </FormGroup>
-            <FormGroup controlId='host'>
-              <ControlLabel>Host/Server/IP Address</ControlLabel>
-              <FormControl type='text' value={connection.host || ''} onChange={this.onHostChange} />
-            </FormGroup>
-            <FormGroup controlId='port'>
-              <ControlLabel>Port (optional)</ControlLabel>
-              <FormControl type='text' value={connection.port || ''} onChange={this.onPortChange} />
-            </FormGroup>
+            {hostInput()}
+            {portInput()}
+            {accountInput()}
             {databaseInput()}
             {domainInput()}
             {usernameInput()}
@@ -382,6 +417,18 @@ var ConnectionForm = React.createClass({
                 </FormGroup>
               </div>
             ) : null)}
+            {(connection.driver === 'snowflake' ? (
+              <div>
+                <FormGroup controlId='snowflakeSchema'>
+                  <ControlLabel>Schema</ControlLabel>
+                  <FormControl type='text' value={connection.snowflakeSchema || ''} onChange={this.onSnowflakeSchemaChange} />
+                </FormGroup>
+                <FormGroup controlId='snowflakeWarehouse'>
+                  <ControlLabel>Schema</ControlLabel>
+                  <FormControl type='text' value={connection.snowflakeWarehouse || ''} onChange={this.onSnowflakeWarehouseChange} />
+                </FormGroup>
+              </div>
+              ) : null)}
             <Button style={{width: 100}} onClick={this.props.saveConnection} disabled={this.props.isSaving}>
               {this.props.isSaving ? 'Saving...' : 'Save'}
             </Button>
