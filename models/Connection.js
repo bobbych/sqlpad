@@ -18,8 +18,8 @@ var schema = {
   mysqlInsecureAuth: Joi.boolean().default(false, 'Mysql Insecure Auth'),
   prestoCatalog: Joi.string().optional().allow(''),
   prestoSchema: Joi.string().optional().allow(''),
-  snowflakeSchema: Joi.string().optional().allow(''),
-  snowflakeWarehouse: Joi.string().optional().allow(''),
+  snowflakeSchema: Joi.string().optional(),
+  snowflakeWarehouse: Joi.string().optional(),
   createdDate: Joi.date().default(new Date(), 'time of creation'),
   modifiedDate: Joi.date().default(new Date(), 'time of modifcation')
 }

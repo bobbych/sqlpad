@@ -369,7 +369,27 @@ var ConnectionForm = React.createClass({
         return (
           <FormGroup controlId='account'>
             <ControlLabel>Account</ControlLabel>
-            <FormControl type='text' value={connection.account || ''} onChange={this.onHostChange} />
+            <FormControl type='text' value={connection.account || ''} onChange={this.onAccountChange} />
+          </FormGroup>
+        )
+      }
+    }
+    var snowflakeSchemaInput = () => {
+      if (connection.driver === 'snowflake') {
+        return (
+          <FormGroup controlId='snowflakeSchema'>
+            <ControlLabel>Snowflake Schema</ControlLabel>
+            <FormControl type='text' value={connection.snowflakeSchema || ''} onChange={this.onSnowflakeSchemaChange} />
+          </FormGroup>
+        )
+      }
+    }
+    var snowflakeWarehouseInput = () => {
+      if (connection.driver === 'snowflake') {
+        return (
+          <FormGroup controlId='snowflakeWarehouse'>
+            <ControlLabel>Snowflake Warehouse</ControlLabel>
+            <FormControl type='text' value={connection.snowflakeWarehouse || ''} onChange={this.onSnowflakeWarehouseChange} />
           </FormGroup>
         )
       }
@@ -405,6 +425,8 @@ var ConnectionForm = React.createClass({
             {sqlserverEncryptInput()}
             {mysqlInsecureAuthInput()}
             {postgresSslInput()}
+            {snowflakeSchemaInput()}
+            {snowflakeWarehouseInput()}
             {(connection.driver === 'presto' ? (
               <div>
                 <FormGroup controlId='prestoCatalog'>
@@ -417,18 +439,6 @@ var ConnectionForm = React.createClass({
                 </FormGroup>
               </div>
             ) : null)}
-            {(connection.driver === 'snowflake' ? (
-              <div>
-                <FormGroup controlId='snowflakeSchema'>
-                  <ControlLabel>Schema</ControlLabel>
-                  <FormControl type='text' value={connection.snowflakeSchema || ''} onChange={this.onSnowflakeSchemaChange} />
-                </FormGroup>
-                <FormGroup controlId='snowflakeWarehouse'>
-                  <ControlLabel>Schema</ControlLabel>
-                  <FormControl type='text' value={connection.snowflakeWarehouse || ''} onChange={this.onSnowflakeWarehouseChange} />
-                </FormGroup>
-              </div>
-              ) : null)}
             <Button style={{width: 100}} onClick={this.props.saveConnection} disabled={this.props.isSaving}>
               {this.props.isSaving ? 'Saving...' : 'Save'}
             </Button>
